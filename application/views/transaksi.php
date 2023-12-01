@@ -51,7 +51,6 @@
                 <input type="number" class="form-control" id="qty" value="<?= $qty ?>" style="width: 100px" aria-describedby="emailHelp" placeholder="QTY" readonly>
                 <input type="hidden" class="form-control" id="total" value="<?= $harga_barang * $qty ?>" style="width: 100px" aria-describedby="emailHelp">
             </div>
-            <!-- <a href="" onclick="addData()"><button class="btn btn-primary ml-2 mb-1">Submit</button></a> -->
           </div>
         </div>
         
@@ -88,8 +87,7 @@
           <label for="exampleFormControlSelect1">Bayar</label>
           <input type="int" class="form-control" id="bayar" oninput="hitungKembalian(this.value)" aria-describedby="emailHelp" style="width: 400px;" placeholder="Bayar">
           <label for="exampleFormControlSelect1" class="mt-1">Kembalian : </label>
-          <span id="kembalian"></span>
-          <!-- <input type="int" class="form-control" id="kembalian" aria-describedby="emailHelp" style="width: 400px;" placeholder="Kembalian"> -->
+          <span id="kembalian">0</span>
         </div>
       </form>
     </div>
@@ -102,27 +100,13 @@
         if (!isNaN(bayar)) {
           const hasil = bayar - total;
   
-          document.getElementById("kembalian").innerText = hasil >= 0 ? hasil : '';
+          document.getElementById("kembalian").innerText = hasil >= 0 ? hasil : 'Total bayar belum mencukupi';
         }else {
-          document.getElementById("kembalian").innerText = "";
+          document.getElementById("kembalian").innerText = 0;
         }
 
       }
     </script>
-
-    <!-- <script>
-      // Inisialisasi array untuk menyimpan data
-      var dataArray = [];
-
-      function addData() {
-        var tgl_transaksi = document.getElementById('tgl_transaksi').value;
-        var kode_barang = document.getElementById('kode_barang').value;
-        var nama_barang = document.getElementById('kode_barang').value;
-        var qty = document.getElementById('qty').value;
-
-        if (inputData.trim() !== '' && inputData2.trim() !== '') {}
-      }
-    </script> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
