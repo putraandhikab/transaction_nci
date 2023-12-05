@@ -7,13 +7,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <center>
-      <title>Transaksi Berhasil</title>
-    </center>
+    <title>Transaksi Berhasil</title>
   </head>
   <body>
     <div class="container mt-4">
-      <h1>Transaksi</h1>
+      <center>
+        <h1>Transaksi Berhasil</h1>
+      </center>
       <a href="<?= base_url() ?>transaksi" class="btn btn-primary">Kembali</a>
       <form>
         <div class="row">
@@ -42,21 +42,15 @@
           <div class="col-6">
             <div class="form-group">
               <label for="exampleFormControlSelect1">Nama Barang</label>
-              <select class="form-control" id="kode_barang" name="kode_barang" style="width: 400px">
-                <option>-- Pilih --</option>
-                <?php foreach($barang as $b) : ?>
-                  <option value="<?= $b->kode_barang ?>"><?= $b->kode_barang ?> - <?= $b->nama_barang ?></option>
-                <?php endforeach; ?>
-              </select>
+              <input type="text" class="form-control" value="<?= $nama_barang ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Alamat Customer" readonly>
             </div>
           </div>
           <div class="col-6">
             <div class="d-inline-block form-group">
                 <label for="exampleInputEmail1">QTY</label>
-                <input type="number" class="form-control" id="qty" name="qty" style="width: 100px" aria-describedby="emailHelp" placeholder="QTY" autocomplete="off">
+                <input type="number" class="form-control" id="qty" value="<?= $qty ?>" style="width: 100px" aria-describedby="emailHelp" placeholder="QTY" readonly>
+                <input type="hidden" class="form-control" id="total" value="<?= $harga_barang * $qty ?>" style="width: 100px" aria-describedby="emailHelp">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <!-- <a href="" onclick="addData()"><button class="btn btn-primary ml-2 mb-1">Submit</button></a> -->
           </div>
         </div>
         
@@ -73,25 +67,46 @@
             </tr>
           </thead>
           <tbody>
-            
+            <?php
+              $no = 1;
+              foreach($data_transaksi as $data) :
+            ?>
+            <tr>
+              <td><?= $no++ ?></td>
+              <td><?= $tgl_transaksi ?></td>
+              <td><?= $kode_barang ?></td>
+              <td><?= $nama_barang ?></td>
+              <td><?= $qty ?></td>
+              <td><?= $harga_barang ?></td>
+              <td><?= $harga_barang * $qty ?></td>
+            </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Bayar</label>
+          <input type="int" class="form-control" id="bayar" oninput="hitungKembalian(this.value)" aria-describedby="emailHelp" style="width: 400px;" placeholder="Bayar">
+          <label for="exampleFormControlSelect1" class="mt-1">Kembalian : </label>
+          <span id="kembalian">0</span>
+        </div>
       </form>
     </div>
 
-    <!-- <script>
-      // Inisialisasi array untuk menyimpan data
-      var dataArray = [];
+    <script>
+      function hitungKembalian(inputValue) {
+        const bayar = parseInt(inputValue);
+        
+        var total = document.getElementById('total').value;
+        if (!isNaN(bayar)) {
+          const hasil = bayar - total;
+  
+          document.getElementById("kembalian").innerText = hasil >= 0 ? hasil : 'Total bayar belum mencukupi';
+        }else {
+          document.getElementById("kembalian").innerText = 0;
+        }
 
-      function addData() {
-        var tgl_transaksi = document.getElementById('tgl_transaksi').value;
-        var kode_barang = document.getElementById('kode_barang').value;
-        var nama_barang = document.getElementById('kode_barang').value;
-        var qty = document.getElementById('qty').value;
-
-        if (inputData.trim() !== '' && inputData2.trim() !== '') {}
       }
-    </script> -->
+    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

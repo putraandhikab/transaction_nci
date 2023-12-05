@@ -12,17 +12,22 @@
   <body>
     <div class="container mt-4">
       <h1>Transaksi</h1>
-      <form method="post" action="<?= base_url() ?>transaksi/tambah_barang">
+      <form method="post" action="<?= base_url() ?>transaksi/hitung_transaksi">
         <div class="form-group">
             <label for="exampleInputEmail1">No. Transaksi</label>
-            <input type="text" class="form-control" value="<?= $no_transaksi ?>" name="no_transaksi" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
-            <input type="hidden" value="<?= $kode_customer ?>" name="kode_customer" readonly>
-            <input type="hidden" value="<?= $nama_customer ?>" name="nama_customer" readonly>
-            <input type="hidden" value="<?= $alamat ?>" name="alamat" readonly>
+            <input type="text" class="form-control" value="<?= $id_transaksi ?>" name="no_transaksi" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Tgl. Transaksi</label>
             <input type="date" class="form-control" min="<?= date('Y-m-d'); ?>" value="<?= date('Y-m-d'); ?>" name="tgl_transaksi" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Nama Customer</label>
+            <input type="text" class="form-control" name="nama_customer" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nama Customer">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Alamat</label>
+            <input type="text" class="form-control" name="alamat" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Alamat Customer">
         </div>
         <div class="row">  
             <div class="col-6">

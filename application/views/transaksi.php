@@ -11,11 +11,13 @@
   </head>
   <body>
     <div class="container mt-4">
-      <center>
-        <h1>Transaksi Berhasil</h1>
-      </center>
-      <a href="<?= base_url() ?>transaksi" class="btn btn-primary">Kembali</a>
-      <form>
+    <?php if(isset($stok_checker)){ ?>
+        <div class="alert alert-danger" role="alert">
+            Maaf, barang yang Anda inginkan tidak tersedia. Stok yang tersedia hanya <?= $stok ?> unit.
+        </div>
+    <?php } ?>
+      <!-- <a href="<?= base_url() ?>transaksi" class="btn btn-primary">Kembali</a> -->
+      <form method="post" action="<?= base_url() ?>transaksi/tambah_barangView">
         <div class="row">
           <div class="col-6">
             <div class="form-group">
@@ -30,26 +32,11 @@
           <div class="col-6">
             <div class="form-group">
                 <label for="exampleInputEmail1">Customer</label>
-                <input type="text" class="form-control" name="nama_customer" value="<?= $nama_customer ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nama Customer" readonly>
+                <input type="text" class="form-control" name="nama_customer" value="<?= isset($nama_customer) ? $nama_customer : '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nama Customer" required>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Alamat</label>
-                <input type="text" class="form-control" name="alamat" value="<?= $alamat ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Alamat Customer" readonly>
-            </div>
-          </div>
-        </div>
-        <div class="row">  
-          <div class="col-6">
-            <div class="form-group">
-              <label for="exampleFormControlSelect1">Nama Barang</label>
-              <input type="text" class="form-control" value="<?= $nama_barang ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Alamat Customer" readonly>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="d-inline-block form-group">
-                <label for="exampleInputEmail1">QTY</label>
-                <input type="number" class="form-control" id="qty" value="<?= $qty ?>" style="width: 100px" aria-describedby="emailHelp" placeholder="QTY" readonly>
-                <input type="hidden" class="form-control" id="total" value="<?= $harga_barang * $qty ?>" style="width: 100px" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="alamat" value="<?= isset($alamat) ? $alamat : '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Alamat Customer" required>
             </div>
           </div>
         </div>
@@ -68,26 +55,49 @@
           </thead>
           <tbody>
             <?php
-              $no = 1;
-              foreach($data_transaksi as $data) :
+            if(!empty($data_table_transaksi)) {
+              foreach($data_table_transaksi as $data) :
             ?>
             <tr>
-              <td><?= $no++ ?></td>
-              <td><?= $tgl_transaksi ?></td>
-              <td><?= $kode_barang ?></td>
-              <td><?= $nama_barang ?></td>
-              <td><?= $qty ?></td>
-              <td><?= $harga_barang ?></td>
-              <td><?= $harga_barang * $qty ?></td>
+              <td><?= $data->urut ?></td>
+              <td><?= $data->tgl_transaksi ?></td>
+              <td><?= $data->kode_barang ?></td>
+              <td><?= $data->nama_barang ?></td>
+              <td><?= $data->qty ?></td>
+              <td><?= $data->harga ?></td>
+              <td><?= $data->harga * $data->qty ?></td>
             </tr>
-            <?php endforeach; ?>
+            <?php 
+                endforeach; 
+            }
+            ?>
           </tbody>
         </table>
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Bayar</label>
-          <input type="int" class="form-control" id="bayar" oninput="hitungKembalian(this.value)" aria-describedby="emailHelp" style="width: 400px;" placeholder="Bayar">
-          <label for="exampleFormControlSelect1" class="mt-1">Kembalian : </label>
-          <span id="kembalian">0</span>
+        <div class="row">
+            <div class="col-6">
+                <?php
+                if(empty($data_table_transaksi)) {
+                ?>
+                    <button type="submit" class="btn btn-primary">Tambah Barang</button>
+                <?php
+                }else {
+                ?>
+                <a href="<?= base_url() ?>transaksi/tambah_barang_existView?no_transaksi=<?= $no_transaksi ?>" class="btn btn-primary">Tambah Barang</a>
+                <?php
+                }
+                ?>
+                <a href="<?= base_url() ?>" class="btn btn-success" onclick="alert('Transaksi Selesai!')">Selesaikan</a>
+            </div>
+            <div class="col-6">
+                <div class="form-group float-right">
+                    <label for="exampleFormControlSelect1">Total</label>
+                    <input type="int" class="form-control" value="<?= isset($total_transaksi) ? $total_transaksi : '' ?>" id="total" aria-describedby="emailHelp" style="width: 400px;" placeholder="Total">
+                    <label for="exampleFormControlSelect1">Bayar</label>
+                    <input type="int" class="form-control" id="bayar" oninput="hitungKembalian(this.value)" aria-describedby="emailHelp" style="width: 400px;" placeholder="Bayar">
+                    <label for="exampleFormControlSelect1" class="mt-1">Kembalian : </label>
+                    <span id="kembalian">0</span>
+                </div>
+            </div>
         </div>
       </form>
     </div>
